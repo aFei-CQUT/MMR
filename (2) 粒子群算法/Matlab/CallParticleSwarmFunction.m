@@ -1,33 +1,33 @@
-function OptimizeDeJong5
-    % ÉèÖÃËæ»úÊıÉú³ÉÆ÷ÒÔ±£Ö¤½á¹û¿ÉÖØ¸´
+ï»¿function OptimizeDeJong5
+    % è®¾ç½®éšæœºæ•°ç”Ÿæˆå™¨ä»¥ä¿è¯ç»“æœå¯é‡å¤
     rng default
 
-    % ¶¨Òå±äÁ¿µÄÊıÁ¿
+    % å®šä¹‰å˜é‡çš„æ•°é‡
     nvars = 2;
 
-    % ¶¨Òå±äÁ¿µÄÏÂ½ç
+    % å®šä¹‰å˜é‡çš„ä¸‹ç•Œ
     lb = [-50, -50];
 
-    % ¶¨Òå±äÁ¿µÄÉÏ½ç
+    % å®šä¹‰å˜é‡çš„ä¸Šç•Œ
     ub = [+50, +50];
 
-    % ÉèÖÃÁ£×ÓÈºÓÅ»¯Æ÷ÓÅ»¯Ñ¡Ïî
+    % è®¾ç½®ç²’å­ç¾¤ä¼˜åŒ–å™¨ä¼˜åŒ–é€‰é¡¹
     options = optimoptions('particleswarm', 'SwarmSize', 1000,...
                             'MaxIterations', 1000);
 
-    % µ÷ÓÃÁ£×ÓÈºÓÅ»¯º¯Êı½øĞĞÇó½â
+    % è°ƒç”¨ç²’å­ç¾¤ä¼˜åŒ–å‡½æ•°è¿›è¡Œæ±‚è§£
     [xopt, fopt, exitflag] = particleswarm(@ObjectiveFunction,...
                                             nvars, lb, ub, options);
 
-    % Êä³ö½á¹û
-    fprintf('×îÓÅ½â:[%f , %f]\n', xopt(1), xopt(2));
-    fprintf('×îÓÅÖµ: %f\n', fopt);
-    fprintf('ÍË³ö±êÖ¾: %d\n', exitflag);
+    % è¾“å‡ºç»“æœ
+    fprintf('æœ€ä¼˜è§£:[%f , %f]\n', xopt(1), xopt(2));
+    fprintf('æœ€ä¼˜å€¼: %f\n', fopt);
+    fprintf('é€€å‡ºæ ‡å¿—: %d\n', exitflag);
 end
 
 function f = ObjectiveFunction(x)
     f = sum(x.^2) + sum( ( x.^2 - 10*cos(2*pi*x) ).^2);
 end
 
-% ÔËĞĞÖ÷³ÌĞò
+% è¿è¡Œä¸»ç¨‹åº
 OptimizeDeJong5;

@@ -10,12 +10,12 @@ class ParticleSwarmOptimization:
         learning_rates: 元组,个体学习率和社会学习率,默认值为(1.5, 1.5)
         max_gen: 整数,最大迭代次数,默认值为3000
         pop_size: 整数,种群大小,默认值为50
-        pop_range: 元组,粒子位置范围,默认值为(-2*np.pi, 2*np.pi)
+        pop_space_range: 元组,粒子位置范围,默认值为(-2*np.pi, 2*np.pi)
         pop_speed_range: 元组,粒子速度范围,默认值为(-0.5, 0.5)
     """
 
     def __init__(self, weight=0.7, learning_rates=(1.5, 1.5), max_gen=3000, 
-                 pop_size=50, pop_range=(-2*np.pi, 2*np.pi), 
+                 pop_size=50, pop_space_range=(-2*np.pi, 2*np.pi), 
                  pop_speed_range=(-0.5, 0.5)):
         """
         初始化粒子群优化算法
@@ -25,14 +25,14 @@ class ParticleSwarmOptimization:
             learning_rates: 元组,个体学习率和社会学习率,默认值为(1.5, 1.5)
             max_gen: 整数,最大迭代次数,默认值为3000
             pop_size: 整数,种群大小,默认值为50
-            pop_range: 元组,粒子位置范围,默认值为(-2*np.pi, 2*np.pi)
+            pop_space_range: 元组,粒子位置范围,默认值为(-2*np.pi, 2*np.pi)
             pop_speed_range: 元组,粒子速度范围,默认值为(-0.5, 0.5)
         """
         self.weight = weight
         self.learning_rates = learning_rates
         self.max_gen = max_gen
         self.pop_size = pop_size
-        self.pop_range = pop_range
+        self.pop_space_range = pop_space_range
         self.pop_speed_range = pop_speed_range
         
         self.pop_positions, self.pop_velocities, self.pop_fitness = self._init_pop_v_fit()
@@ -68,7 +68,7 @@ class ParticleSwarmOptimization:
             pop_velocities: ndarray,种群速度,形状为 (pop_size, 2)
             pop_fitness: ndarray,种群适应度,形状为 (pop_size,)
         """
-        pop_positions = np.random.uniform(self.pop_range[0], self.pop_range[1], (self.pop_size, 2))
+        pop_positions = np.random.uniform(self.pop_space_range[0], self.pop_space_range[1], (self.pop_size, 2))
         pop_velocities = np.random.uniform(self.pop_speed_range[0], self.pop_speed_range[1], (self.pop_size, 2))
         pop_fitness = np.apply_along_axis(self._func, 1, pop_positions)
         return pop_positions, pop_velocities, pop_fitness
@@ -106,7 +106,7 @@ class ParticleSwarmOptimization:
     def _update_positions(self):
         """更新粒子位置"""
         self.pop_positions = self.pop_positions + self.pop_velocities
-        self.pop_positions = np.clip(self.pop_positions, self.pop_range[0], self.pop_range[1])
+        self.pop_positions = np.clip(self.pop_positions, self.pop_space_range[0], self.pop_space_range[1])
 
     def _update_fitness(self):
         """更新适应度和最优解"""
@@ -171,8 +171,8 @@ class ParticleSwarmOptimization:
         ax1.set_xlabel('X', fontsize=12, fontweight='bold')
         ax1.set_ylabel('Y', fontsize=12, fontweight='bold')
         ax1.set_title(f'{title} - 粒子位置', fontsize=14, fontweight='bold')
-        ax1.set_xlim(self.pop_range)
-        ax1.set_ylim(self.pop_range)
+        ax1.set_xlim(self.pop_space_range)
+        ax1.set_ylim(self.pop_space_range)
         
         # 计算颜色映射
         norm = plt.Normalize(self.pop_fitness.min(), self.pop_fitness.max())

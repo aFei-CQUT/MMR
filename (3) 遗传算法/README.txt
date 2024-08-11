@@ -1,6 +1,5 @@
-大写的为Matlab文件
-小写的为Python文件
-
+Python文件夹 --> 文件夹名称小写
+Matlab文件夹 --> 文件夹名称大写
 
 ---
 严重超纲的GitHub项目记录

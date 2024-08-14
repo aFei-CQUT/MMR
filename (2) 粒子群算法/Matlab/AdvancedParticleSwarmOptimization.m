@@ -1,4 +1,7 @@
-﻿function ParticleSwarmFunction
+% 与ParticleSwarmOptimization相比
+% 第一：支持选择不同的测试函数
+% 第二：支持更高的维度
+function AdvancedParticleSwarmOptimization
 
 % 搜索空间的维度
 Dimension = 40;
@@ -171,36 +174,36 @@ function Fitness = FitnessFunction(ParticlePosition, FunctionNumber)
 % 计算粒子的适应度
 Dimension = size(ParticlePosition, 1);
 
-% 选择标准测试函数
-switch FunctionNumber
-    case 1
-        % f1_Sphere
-        SphereFunction = ParticlePosition(:)' * ParticlePosition(:);
-        Fitness = SphereFunction;
-    case 2
-        % f2_Griewank
-        GriewankTerm1 = ParticlePosition(:)' * ParticlePosition(:) / 4000;
-        GriewankTerm2 = 1;
-        for DimensionIndex = 1:Dimension
-            GriewankTerm2 = GriewankTerm2 * cos(ParticlePosition(DimensionIndex) / sqrt(DimensionIndex));
-        end
-        GriewankFunction = GriewankTerm1 - GriewankTerm2 + 1;
-        Fitness = GriewankFunction;
-    case 3
-        % f3_Rastrigin
-        RastriginFunction = ParticlePosition(:)' * ParticlePosition(:) - ...
-            10 * sum(cos(ParticlePosition(:) * 2 * pi)) + 10 * Dimension;
-        Fitness = RastriginFunction;
-    case 4
-        % f4_Rosenbrock
-        RosenbrockTerm = 0;
-        for DimensionIndex = 1:(Dimension - 1)
-            RosenbrockTerm = RosenbrockTerm + ...
-                100 * (ParticlePosition(DimensionIndex + 1) - ...
-                ParticlePosition(DimensionIndex)^2)^2 + ...
-                (ParticlePosition(DimensionIndex) - 1)^2;
-        end
-        Fitness = RosenbrockTerm;
-end
+    % 选择标准测试函数
+    switch FunctionNumber
+        case 1
+            % f1_Sphere
+            SphereFunction = ParticlePosition(:)' * ParticlePosition(:);
+            Fitness = SphereFunction;
+        case 2
+            % f2_Griewank
+            GriewankTerm1 = ParticlePosition(:)' * ParticlePosition(:) / 4000;
+            GriewankTerm2 = 1;
+            for DimensionIndex = 1:Dimension
+                GriewankTerm2 = GriewankTerm2 * cos(ParticlePosition(DimensionIndex) / sqrt(DimensionIndex));
+            end
+            GriewankFunction = GriewankTerm1 - GriewankTerm2 + 1;
+            Fitness = GriewankFunction;
+        case 3
+            % f3_Rastrigin
+            RastriginFunction = ParticlePosition(:)' * ParticlePosition(:) - ...
+                10 * sum(cos(ParticlePosition(:) * 2 * pi)) + 10 * Dimension;
+            Fitness = RastriginFunction;
+        case 4
+            % f4_Rosenbrock
+            RosenbrockTerm = 0;
+            for DimensionIndex = 1:(Dimension - 1)
+                RosenbrockTerm = RosenbrockTerm + ...
+                    100 * (ParticlePosition(DimensionIndex + 1) - ...
+                    ParticlePosition(DimensionIndex)^2)^2 + ...
+                    (ParticlePosition(DimensionIndex) - 1)^2;
+            end
+            Fitness = RosenbrockTerm;
+    end
 
 end

@@ -1,4 +1,4 @@
-﻿function OptimizeDeJong5
+function OptimizeDeJong5
     % 设置随机数生成器以保证结果可重复
     rng default
 

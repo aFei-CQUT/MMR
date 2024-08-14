@@ -1,7 +1,7 @@
 function ParticleSwarmOptimization
     % 参数设置
     particle_population_size = 50;  % 粒子群大小
-    max_iterations = 3000;           % 最大迭代次数
+    max_iterations = 300;           % 最大迭代次数
     inertia_weight = 0.7;            % 惯性权重
     individual_learning_factor = 1.5; % 个体学习因子
     social_learning_factor = 1.5;     % 社会学习因子
@@ -17,12 +17,19 @@ function ParticleSwarmOptimization
     y_velocity_bound = [-0.5, 0.5];    % y 维度速度范围
     velocity_bounds = [x_velocity_bound; y_velocity_bound];  % 组合成速度范围
     
-    % 初始化种群
-    particle_positions = [position_bounds(1,1) + (position_bounds(1,2) - position_bounds(1,1)) * rand(particle_population_size, 1), ...
-                          position_bounds(2,1) + (position_bounds(2,2) - position_bounds(2,1)) * rand(particle_population_size, 1)];
-    particle_velocities = [velocity_bounds(1,1) + (velocity_bounds(1,2) - velocity_bounds(1,1)) * rand(particle_population_size, 1), ...
-                           velocity_bounds(2,1) + (velocity_bounds(2,2) - velocity_bounds(2,1)) * rand(particle_population_size, 1)];
-    particle_fitness = cellfun(@objective_function, mat2cell(particle_positions, ones(particle_population_size, 1), dimension));
+    % 初始化种群位置
+    particle_positions = [position_bounds(1,1) + (position_bounds(1,2)...
+                            - position_bounds(1,1)) * rand(particle_population_size, 1), ...
+                          position_bounds(2,1) + (position_bounds(2,2)...
+                            - position_bounds(2,1)) * rand(particle_population_size, 1)];
+    % 初始化种群速度
+    particle_velocities = [velocity_bounds(1,1) + (velocity_bounds(1,2)...
+                            - velocity_bounds(1,1)) * rand(particle_population_size, 1), ...
+                           velocity_bounds(2,1) + (velocity_bounds(2,2)...
+                            - velocity_bounds(2,1)) * rand(particle_population_size, 1)];
+    % 初始化种群适应度
+    particle_fitness = cellfun(@objective_function,...
+        mat2cell(particle_positions, ones(particle_population_size, 1), dimension));
     
     % 初始化个体最优和全局最优
     personal_best_positions = particle_positions;
@@ -71,6 +78,20 @@ function ParticleSwarmOptimization
         end
         
         global_best_history(iteration) = global_best_fitness;
+    
+        % 可视化粒子位置
+        figure(1);
+        clf; % 清除当前图形
+        hold on;
+        scatter(particle_positions(:,1), particle_positions(:,2), 30, 'b', 'filled'); % 粒子位置
+        scatter(global_best_position(1), global_best_position(2), 100, 'r', 'filled'); % 全局最优位置
+        title(['Iteration: ' num2str(iteration) ', Global Best Fitness: ' num2str(global_best_fitness)]);
+        xlabel('X Position');
+        ylabel('Y Position');
+        xlim(position_bounds(1,:));
+        ylim(position_bounds(2,:));
+        grid on;
+        drawnow; % 更新图形
     end
     
     % 打印结果
